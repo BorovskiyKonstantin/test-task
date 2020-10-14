@@ -12,21 +12,26 @@ import java.util.TreeSet;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "CAR")
-public class Car extends BaseVehicleEntity {
-    private Double power;
+@Table(name = "AIRPLANE")
+public class Airplane extends BaseVehicleEntity {
+    private String manufacturer;
+    @Column(name = "fuel_capacity")
+    private Integer fuelCapacity;
+    private Integer seats;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "ASSESSMENT_CAR",
-            joinColumns = {@JoinColumn(name = "car_id")},
+            name = "ASSESSMENT_AIRPLANE",
+            joinColumns = {@JoinColumn(name = "airplane_id")},
             inverseJoinColumns = {@JoinColumn(name = "assessment_id")}
     )
     private Set<Assessment> values = new TreeSet<>();
 
-    public Car(Long id, String brand, String model, Short year, Double power, Set<Assessment> values) {
+    public Airplane(Long id, String brand, String model, Short year, String manufacturer, Integer fuelCapacity, Integer seats, TreeSet<Assessment> values) {
         super(id, brand, model, year);
-        this.power = power;
+        this.manufacturer = manufacturer;
+        this.fuelCapacity = fuelCapacity;
+        this.seats = seats;
         this.values = values;
     }
 

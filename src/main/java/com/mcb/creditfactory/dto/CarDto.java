@@ -1,21 +1,23 @@
 package com.mcb.creditfactory.dto;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.math.BigDecimal;
+import java.util.Set;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @JsonTypeName("car")
-public class CarDto implements Collateral {
-    private Long id;
+public class CarDto extends AbstractVehicleDto {
     private String brand;
     private String model;
     private Double power;
-    private Short year;
-    private BigDecimal value;
+
+    public CarDto(Long id, Short year, Set<AssessmentDto> assessments, String brand, String model, Double power) {
+        super(id, year, assessments);
+        this.brand = brand;
+        this.model = model;
+        this.power = power;
+    }
 }

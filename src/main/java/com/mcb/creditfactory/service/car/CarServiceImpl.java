@@ -2,17 +2,23 @@ package com.mcb.creditfactory.service.car;
 
 import com.mcb.creditfactory.dto.CarDto;
 import com.mcb.creditfactory.external.ExternalApproveService;
+import com.mcb.creditfactory.model.Assessment;
 import com.mcb.creditfactory.model.Car;
 import com.mcb.creditfactory.repository.CarRepository;
+import com.mcb.creditfactory.service.assessment.AssessmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.TreeSet;
 
 @Service
 public class CarServiceImpl implements CarService {
     @Autowired
     private ExternalApproveService approveService;
+
+    @Autowired
+    private AssessmentService assessmentService;
 
     @Autowired
     private CarRepository carRepository;
@@ -34,25 +40,32 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Car fromDto(CarDto dto) {
+        TreeSet<Assessment> assessments = new TreeSet<>();
+        //При создании нового объекта обеспечения с переданным value
+        if (dto.getValue() != null) {
+            Assessment assessment = new Assessment(dto.getValue());
+            assessments.add(assessment);
+        }
+
         return new Car(
                 dto.getId(),
                 dto.getBrand(),
                 dto.getModel(),
-                dto.getPower(),
                 dto.getYear(),
-                dto.getValue()
+                dto.getPower(),
+                assessments
         );
     }
 
     @Override
-    public CarDto toDTO(Car car) {
+    public CarDto toDto(Car car) {
         return new CarDto(
                 car.getId(),
+                car.getYear(),
+                assessmentService.toDtoSet(car.getValues()),
                 car.getBrand(),
                 car.getModel(),
-                car.getPower(),
-                car.getYear(),
-                car.getValue()
+                car.getPower()
         );
     }
 
@@ -60,4 +73,5 @@ public class CarServiceImpl implements CarService {
     public Long getId(Car car) {
         return car.getId();
     }
+
 }

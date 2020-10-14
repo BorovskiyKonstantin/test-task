@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,12 @@ public class CollateralObjectController {
     @PostMapping("/collateral/info")
     public HttpEntity<Collateral> getInfo(@RequestBody Collateral object) {
         Collateral info = service.getInfo(object);
+        return info != null ? ResponseEntity.ok(info) : ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/collateral/update")
+    public HttpEntity<Collateral> update(@RequestBody Collateral object) {
+        Collateral info = service.updateCollateral(object);
         return info != null ? ResponseEntity.ok(info) : ResponseEntity.notFound().build();
     }
 }

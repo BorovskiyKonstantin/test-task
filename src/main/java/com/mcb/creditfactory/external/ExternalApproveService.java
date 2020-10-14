@@ -12,21 +12,26 @@ import java.time.Month;
 public class ExternalApproveService {
     private static final LocalDate MIN_ASSESS_DATE = LocalDate.of(2017, Month.OCTOBER, 1);
     private static final int MIN_CAR_YEAR = 2000;
-    private static final BigDecimal MIN_CAR_VALUE = BigDecimal.valueOf(1000000);
+    private static final BigDecimal MIN_CAR_VALUE = BigDecimal.valueOf(1_000_000);
     private static final int MIN_PLANE_YEAR = 1991;
-    private static final BigDecimal MIN_PLANE_VALUE = BigDecimal.valueOf(230000000);
+    private static final BigDecimal MIN_PLANE_VALUE = BigDecimal.valueOf(230_000_000);
 
 
     public int approve(CollateralObject object) {
-        if (object.getDate() == null ||object.getYear() == null || object.getValue() == null || object.getType() == null) {
+        if (object.getDate() == null || object.getYear() == null || object.getValue() == null || object.getType() == null) {
             return -1;
         }
 
         int code;
         switch (object.getType()) {
-            case CAR: code = approveCar(object); break;
-            case AIRPLANE: code = approvePlane(object); break;
-            default: code = -100;
+            case CAR:
+                code = approveCar(object);
+                break;
+            case AIRPLANE:
+                code = approvePlane(object);
+                break;
+            default:
+                code = -100;
         }
 
         return code;
